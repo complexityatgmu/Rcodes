@@ -7,6 +7,32 @@ credDates="https://docs.google.com/spreadsheet/pub?key=0AgEOIhph65nJdHV2dzEwdkFV
 credDetails="https://docs.google.com/spreadsheet/pub?key=0AgEOIhph65nJdDA4VTA3Yy1CQjRPR2dYa2xKUlg1YXc&single=true&gid=0&output=csv"
 glide="https://docs.google.com/spreadsheet/pub?key=0AgEOIhph65nJdHdTSWhtQXdlYjRnNmxyR3JPOV9hbXc&single=true&gid=0&output=csv"
 strauss="https://docs.google.com/spreadsheet/pub?key=0AgEOIhph65nJdEVQZUtxc1Y3WjBfeV9CUmJIakYzdFE&single=true&gid=0&output=csv"
+canada="https://docs.google.com/spreadsheet/pub?key=0AhVqDdZgThPldEo5Y3dvblA0OTRFT1dGRTZsTVpmcXc&output=csv"
+###CANADA
+myCsv <- getURL(canada)
+data=read.csv(textConnection(myCsv))
+names(data)
+EventCount=as.data.frame(table(data$LOC))
+EventPercent=as.data.frame(prop.table(table(data$LOC)))
+EventPercent=EventPercent[-3,]
+EventCount=EventCount[-3,]
+names(EventCount)=c('ProvinceOrTerritory','Count')
+names(EventPercent)=c('ProvinceOrTerritory','Percent')
+CanadaDis=gvisGeoMap(EventPercent, locationvar="ProvinceOrTerritory", numvar="Percent",
+                  options=list(height=300, region="CA"), chartid="Events") 
+plot(CanadaDis)
+
+CanadaDis2<-gvisGeoChart(EventPercent,
+                         "ProvinceOrTerritory",
+                         "Percent",
+                         options=list(region="CA",displayMode="Regions",
+                                      backgroundColor="lightblue", 
+                                      resolution="provinces",
+                                      keepAspectRatio=FALSE,width=800,height=600),
+                               chartid="DisastersperRegion")
+plot(CanadaDis2)
+
+##CRED
 myCsv <- getURL(credDates)
 data=read.csv(textConnection(myCsv))
 EventCount=as.data.frame(table(data$Gcountry))
